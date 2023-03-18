@@ -1,5 +1,5 @@
 import { Col, Grid, Row } from 'rsuite';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar';
 
 const Home = () => {
   return (

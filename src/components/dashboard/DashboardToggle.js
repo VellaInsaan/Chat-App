@@ -1,11 +1,11 @@
 import { BiBarChartSquare } from 'react-icons/bi';
 import { Button, Drawer } from 'rsuite';
 import { Icon } from '@rsuite/icons';
-import { useModalState } from '../misc/custom-hooks';
+import { useModalState } from '../../misc/custom-hooks';
 import Dashboard from '.';
-import { useMediaQuery } from '../misc/custom-hooks';
+import { useMediaQuery } from '../../misc/custom-hooks';
 import { useCallback } from 'react';
-import { auth } from '../misc/firebase';
+import { auth } from '../../misc/firebase';
 import { Notification, useToaster } from 'rsuite';
 
 const DashboardToggle = () => {
