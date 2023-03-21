@@ -1,12 +1,13 @@
 import { useRef, useState } from 'react';
-import { Button, Modal, Notification, useToaster } from 'rsuite';
+import { Button, Modal } from 'rsuite';
 import { useModalState } from '../../misc/custom-hooks';
 import AvatarEditor from 'react-avatar-editor';
 import { database, storage } from '../../misc/firebase';
 import { useProfile } from '../../context/profile.context';
+import { MessageOnError, showMessage } from '../../misc/helpers';
+import ProfileAvatar from './ProfileAvatar';
 
 const AvatarBtnUpload = () => {
-  const toaster = useToaster();
   const { profile } = useProfile();
   const filesInputType = '.jpg, .jpeg, .png';
   const { isOpen, open, close } = useModalState();
@@ -51,19 +52,10 @@ const AvatarBtnUpload = () => {
       await userAvatarRef.set(downloadURL);
       setIsLoading(false);
 
-      const messageOnEmpty = (
-        <Notification type={'info'} header={`Avatar has been uploaded`} />
-      );
-
-      toaster.push(messageOnEmpty, { placement: 'topCenter' });
+      showMessage('info', 'Avatar has been uploaded');
     } catch (error) {
       setIsLoading(false);
-      const messageOnError = (
-        <Notification type={'error'} header={'ERROR'}>
-          {error.message}
-        </Notification>
-      );
-      return toaster.push(messageOnError, { placement: 'topCenter' });
+      MessageOnError(error.message);
     }
   };
 
@@ -77,19 +69,18 @@ const AvatarBtnUpload = () => {
         setImg(file);
         open();
       } else {
-        const messageOnMismatch = (
-          <Notification
-            type={'warning'}
-            header={`Wrong file format ${file.type}`}
-          />
-        );
-        return toaster.push(messageOnMismatch, { placement: 'topCenter' });
+        showMessage('warning', `Wrong file format ${file.type}`);
       }
     }
   };
 
   return (
     <div className='mt-3 text-center'>
+      <ProfileAvatar
+        src={profile.avatar}
+        name={profile.name}
+        className='width-200 height-200 img-fullsize font-huge'
+      />
       <div>
         <label
           htmlFor='avatar-upload'
