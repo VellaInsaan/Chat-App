@@ -6,22 +6,18 @@ import Dashboard from '.';
 import { useMediaQuery } from '../../misc/custom-hooks';
 import { useCallback } from 'react';
 import { auth } from '../../misc/firebase';
-import { Notification, useToaster } from 'rsuite';
+import { showMessage } from '../../misc/helpers';
 
 const DashboardToggle = () => {
-  const toaster = useToaster();
   const { isOpen, open, close } = useModalState();
   const isMobile = useMediaQuery('(max-width: 992px');
 
   const onSignOut = useCallback(() => {
-    const messageOnSignOut = (
-      <Notification type={'info'} header={'Signed Out'} />
-    );
+    showMessage('info', 'Signed Out');
     auth.signOut();
 
-    toaster.push(messageOnSignOut, { placement: 'topCenter' });
     close();
-  }, [close, toaster]);
+  }, [close]);
 
   const drawerHandler = () => {
     if (isMobile) {

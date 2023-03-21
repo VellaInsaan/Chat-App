@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
-import { Button, Notification, Tag, useToaster } from 'rsuite';
+import { Button, Tag } from 'rsuite';
 import { Icon } from '@rsuite/icons';
 import { auth } from '../../misc/firebase';
 
 import firebase from 'firebase';
+import { MessageOnError, showMessage } from '../../misc/helpers';
 
 const ProviderBlock = () => {
-  const toaster = useToaster();
   const [isConnected, setIsConnected] = useState({
     'google.com': auth.currentUser.providerData.some(
       (data) => data.providerId === 'google.com'
@@ -32,19 +32,9 @@ const ProviderBlock = () => {
       await auth.currentUser.unlink(providerID);
 
       updateIsConnected(providerID, false);
-      const messageOnEmpty = (
-        <Notification
-          type={'info'}
-          header={`Disconnected from ${providerID}`}
-        />
-      );
-
-      toaster.push(messageOnEmpty, { placement: 'topCenter' });
+      showMessage('info', `Disconnected from ${providerID}`);
     } catch (error) {
-      const messageOnError = (
-        <Notification type={'error'} header={error.message} />
-      );
-      return toaster.push(messageOnError, { placement: 'topCenter' });
+      MessageOnError(error.message);
     }
   };
 
@@ -55,25 +45,14 @@ const ProviderBlock = () => {
     unlink('facebook.com');
   };
 
-  const link = (provider) => {
+  const link = async (provider) => {
     try {
-      auth.currentUser.linkWithPopup(provider);
+      await auth.currentUser.linkWithPopup(provider);
 
-      const messageOnSuccess = (
-        <Notification
-          type={'info'}
-          header={`Linked to ${provider.providerId}`}
-        />
-      );
-      toaster.push(messageOnSuccess, {
-        placement: 'topCenter',
-      });
       updateIsConnected(provider.providerId, true);
+      showMessage('success', `Linked to ${provider.providerId}`);
     } catch (error) {
-      const messageOnError = (
-        <Notification type={'error'} header={error.message} />
-      );
-      return toaster.push(messageOnError, { placement: 'topCenter' });
+      MessageOnError(error.message);
     }
   };
   const linkGoogle = () => {

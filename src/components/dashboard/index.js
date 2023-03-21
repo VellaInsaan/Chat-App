@@ -1,13 +1,13 @@
 import React from 'react';
-import { Button, Divider, Drawer, Notification, useToaster } from 'rsuite';
+import { Button, Divider, Drawer } from 'rsuite';
 import { useProfile } from '../../context/profile.context';
 import { database } from '../../misc/firebase';
+import { MessageOnError, showMessage } from '../../misc/helpers';
 import EditableInput from '../EditableInput';
 import AvatarBtnUpload from './AvatarBtnUpload';
 import ProviderBlock from './ProviderBlock';
 
 const Dashboard = ({ onSignOut }) => {
-  const toaster = useToaster();
   const { profile } = useProfile();
   const onSave = async (newData) => {
     const userNickName = database.ref(`profiles/${profile.uid}/`).child('name');
@@ -15,16 +15,9 @@ const Dashboard = ({ onSignOut }) => {
     try {
       await userNickName.set(newData);
 
-      const messageOnSuccess = (
-        <Notification type={'success'} header={'Nickname has been updated'} />
-      );
-
-      toaster.push(messageOnSuccess, { placement: 'topCenter' });
+      showMessage('success', 'Nickname has been updated');
     } catch (error) {
-      const messageOnError = (
-        <Notification type={'error'} header={error.message} />
-      );
-      toaster.push(messageOnError, { placement: 'topCenter' });
+      MessageOnError(error.message);
     }
   };
 

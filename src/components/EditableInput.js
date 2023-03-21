@@ -1,7 +1,8 @@
 import { GrCheckmark, GrEdit, GrFormClose } from 'react-icons/gr';
 import { Icon } from '@rsuite/icons';
 import { useCallback, useState } from 'react';
-import { Input, InputGroup, Notification, useToaster } from 'rsuite';
+import { Input, InputGroup } from 'rsuite';
+import { showMessage } from '../misc/helpers';
 
 const EditableInput = ({
   initialValue,
@@ -11,7 +12,6 @@ const EditableInput = ({
   emptyMsg = 'Input is empty',
   ...inputProps
 }) => {
-  const toaster = useToaster();
   const [input, setInput] = useState(initialValue);
   const [isEditable, setIsEditable] = useState(false);
 
@@ -28,9 +28,7 @@ const EditableInput = ({
     const trimmed = input.trim();
 
     if (trimmed === '') {
-      const messageOnEmpty = <Notification type={'info'} header={emptyMsg} />;
-
-      toaster.push(messageOnEmpty, { placement: 'topCenter' });
+      showMessage('info', emptyMsg);
     }
 
     if (trimmed !== initialValue) {

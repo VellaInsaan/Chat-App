@@ -11,18 +11,12 @@ import firebase from 'firebase/app';
 import { FaFacebookF, FaGoogle } from 'react-icons/fa';
 import { Icon } from '@rsuite/icons';
 import { auth, database } from '../misc/firebase';
-import { Notification, useToaster } from 'rsuite';
+import { MessageOnError, showMessage } from '../misc/helpers';
 
 const SignIn = () => {
-  const toaster = useToaster();
-
   const signInWithProvider = async (provider) => {
     try {
       const { additionalUserInfo, user } = await auth.signInWithPopup(provider);
-
-      const messageOnSuccess = (
-        <Notification type={'success'} header={'Signed In'} />
-      );
 
       if (additionalUserInfo.isNewUser) {
         database.ref(`/profiles/${user.uid}`).set({
@@ -31,12 +25,9 @@ const SignIn = () => {
         });
       }
 
-      toaster.push(messageOnSuccess, { placement: 'topCenter' });
+      showMessage('success', 'Signed In');
     } catch (error) {
-      const messageOnError = (
-        <Notification type={'error'} header={error.message} />
-      );
-      toaster.push(messageOnError, { placement: 'topCenter' });
+      MessageOnError(error.message);
     }
   };
 
