@@ -3,9 +3,9 @@ import { forwardRef, useCallback, useRef, useState } from 'react';
 import { HiOutlineLightBulb } from 'react-icons/hi';
 import { Button, Form, Input, Modal, Schema } from 'rsuite';
 import firebase from 'firebase';
-import { useModalState } from '../../misc/custom-hooks';
-import { database } from '../../misc/firebase';
-import { MessageOnError, showMessage } from '../../misc/helpers';
+import { useModalState } from '../misc/custom-hooks';
+import { database } from '../misc/firebase';
+import { MessageOnError, showMessage } from '../misc/helpers';
 
 const { StringType } = Schema.Types;
 
