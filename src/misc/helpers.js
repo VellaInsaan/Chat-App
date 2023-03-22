@@ -23,3 +23,11 @@ export const getNameInitials = (name) => {
 
   return splitName[0][0];
 };
+
+export const tranformToArrWithId = (snapValue) => {
+  return snapValue
+    ? Object.keys(snapValue).map((roomId) => {
+        return { ...snapValue[roomId], id: roomId };
+      })
+    : [];
+};
