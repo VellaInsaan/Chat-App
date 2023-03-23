@@ -25,9 +25,9 @@ const ChatRoomList = ({ aboveElHeight }) => {
         rooms.map((room) => (
           <Nav.Item
             as={Link}
-            to={`/chats/${room.id}`}
+            to={`/chat/${room.id}`}
             key={room.id}
-            eventKey={`/chats/${room.id}`}
+            eventKey={`/chat/${room.id}`}
           >
             <RoomItem room={room} />
           </Nav.Item>

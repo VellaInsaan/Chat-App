@@ -1,4 +1,4 @@
-import Home from '../pages/Home';
+import Home from '../pages/Home/index';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useProfile } from '../context/profile.context';
 import { Container, Loader } from 'rsuite';
@@ -19,7 +19,7 @@ const PrivateRoute = () => {
 
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
+      <Route path='*' element={<Home />} />
     </Routes>
   );
 };

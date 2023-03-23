@@ -11,7 +11,7 @@ function App() {
     <ProfileProvider>
       <Routes>
         <Route path='/signin/*' element={<PublicRoute />} />
-        <Route path='/*' element={<PrivateRoute />} />
+        <Route path='*' element={<PrivateRoute />} />
       </Routes>
     </ProfileProvider>
   );
