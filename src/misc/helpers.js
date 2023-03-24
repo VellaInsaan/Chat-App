@@ -31,3 +31,32 @@ export const tranformToArrWithId = (snapValue) => {
       })
     : [];
 };
+
+export const getUserUpdate = async (userId, keyToUpdate, value, db) => {
+  const updates = {};
+
+  updates[`/profiles/${userId}/${keyToUpdate}`] = value;
+
+  const getMsgs = db
+    .ref('/messages')
+    .orderByChild('author/uid')
+    .equalTo(userId)
+    .once('value');
+
+  const getRooms = db
+    .ref('/rooms')
+    .orderByChild('lastMessage/author/uid')
+    .equalTo(userId)
+    .once('value');
+
+  const [msgSnap, roomSnap] = await Promise.all([getMsgs, getRooms]);
+
+  msgSnap.forEach((msg) => {
+    updates[`/messages/${msg.key}/author/${keyToUpdate}`] = value;
+  });
+  roomSnap.forEach((room) => {
+    updates[`/rooms/${room.key}/lastMessage/author/${keyToUpdate}`] = value;
+  });
+
+  return updates;
+};
