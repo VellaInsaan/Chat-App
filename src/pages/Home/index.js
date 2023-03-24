@@ -12,7 +12,7 @@ const Home = () => {
   const strictlyMatchesHome = resolvedPath.pathname === '/';
   // const isOnChatPage = resolvedPath.pathname.startsWith('/chat');
   const canRenderSidebar = isDesktop || strictlyMatchesHome;
-  console.log(strictlyMatchesHome, 'IsDesktop', isDesktop);
+
   return (
     <RoomsProvider>
       <Grid fluid className='h-100'>

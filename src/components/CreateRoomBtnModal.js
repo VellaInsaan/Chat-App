@@ -37,7 +37,6 @@ const CreateRoomBtnModal = () => {
       return;
     }
 
-    console.log(formValue);
     setIsLoading(true);
     const newRoomData = {
       ...formValue,

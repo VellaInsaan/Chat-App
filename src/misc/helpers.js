@@ -2,7 +2,7 @@ import { Notification, toaster } from 'rsuite';
 
 export const MessageOnError = (error) => {
   const messageOnError = (
-    <Notification type={'error'} header={'Error'}>
+    <Notification type={'error'} header={'Error'} closable>
       {error}
     </Notification>
   );
@@ -10,7 +10,7 @@ export const MessageOnError = (error) => {
 };
 
 export const showMessage = (type, message) => {
-  const notification = <Notification type={type} header={message} />;
+  const notification = <Notification type={type} header={message} closable />;
   return toaster.push(notification, { placement: 'topCenter' });
 };
 
@@ -24,7 +24,7 @@ export const getNameInitials = (name) => {
   return splitName[0][0];
 };
 
-export const tranformToArrWithId = (snapValue) => {
+export const transformToArrWithId = (snapValue) => {
   return snapValue
     ? Object.keys(snapValue).map((roomId) => {
         return { ...snapValue[roomId], id: roomId };
