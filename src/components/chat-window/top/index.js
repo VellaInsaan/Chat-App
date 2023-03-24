@@ -15,7 +15,7 @@ const Top = () => {
   return (
     <div>
       <div className='d-flex justify-content-between align-items-center'>
-        <h4>
+        <h4 className='d-flex text-disapper align-items-center'>
           <Link
             to='/'
             className={

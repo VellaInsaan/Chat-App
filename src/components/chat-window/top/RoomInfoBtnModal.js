@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Button, Modal } from 'rsuite';
 import { useCurrentRoom } from '../../../context/current-room.context';
 import { useModalState } from '../../../misc/custom-hooks';
@@ -14,7 +15,7 @@ const RoomInfoBtnModal = () => {
       </Button>
       <Modal open={isOpen} onClose={close}>
         <Modal.Header>
-          <Modal.Title>About {name}</Modal.Title>
+          <h4 className='mb-1'>About {name}</h4>
         </Modal.Header>
         <Modal.Body>
           <h6 className='mb-1'>Description </h6>
@@ -30,4 +31,4 @@ const RoomInfoBtnModal = () => {
   );
 };
 
-export default RoomInfoBtnModal;
+export default memo(RoomInfoBtnModal);
