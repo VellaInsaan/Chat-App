@@ -5,18 +5,26 @@ import { useModalState } from '../../misc/custom-hooks';
 import Dashboard from '.';
 import { useMediaQuery } from '../../misc/custom-hooks';
 import { useCallback } from 'react';
-import { auth } from '../../misc/firebase';
-import { showMessage } from '../../misc/helpers';
+import { auth, database } from '../../misc/firebase';
+import { MessageOnError, showMessage } from '../../misc/helpers';
+import { isOfflineForDatabase } from '../../context/profile.context';
 
 const DashboardToggle = () => {
   const { isOpen, open, close } = useModalState();
   const isMobile = useMediaQuery('(max-width: 992px');
 
   const onSignOut = useCallback(() => {
-    showMessage('info', 'Signed Out');
-    auth.signOut();
-
-    close();
+    database
+      .ref(`/status/${auth.currentUser.uid}`)
+      .set(isOfflineForDatabase)
+      .then(() => {
+        auth.signOut();
+        showMessage('info', 'Signed Out');
+        close();
+      })
+      .catch((err) => {
+        MessageOnError(err.message);
+      });
   }, [close]);
 
   const drawerHandler = () => {
