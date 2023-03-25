@@ -4,7 +4,7 @@ import { HiOutlineLightBulb } from 'react-icons/hi';
 import { Button, Form, Input, Modal, Schema } from 'rsuite';
 import firebase from 'firebase';
 import { useModalState } from '../misc/custom-hooks';
-import { database } from '../misc/firebase';
+import { auth, database } from '../misc/firebase';
 import { MessageOnError, showMessage } from '../misc/helpers';
 
 const { StringType } = Schema.Types;
@@ -41,6 +41,9 @@ const CreateRoomBtnModal = () => {
     const newRoomData = {
       ...formValue,
       createdAt: firebase.database.ServerValue.TIMESTAMP,
+      admins: {
+        [auth.currentUser.uid]: true,
+      },
     };
 
     try {
