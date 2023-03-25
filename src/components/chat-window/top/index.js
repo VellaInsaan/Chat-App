@@ -6,8 +6,9 @@ import { useCurrentRoom } from '../../../context/current-room.context';
 
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from '../../../misc/custom-hooks';
-import { Button, ButtonToolbar } from 'rsuite';
+import { ButtonToolbar } from 'rsuite';
 import RoomInfoBtnModal from './RoomInfoBtnModal';
+import EditRoomDrawerBtn from './EditRoomDrawerBtn';
 
 const Top = () => {
   const name = useCurrentRoom((val) => val.name);
@@ -30,7 +31,7 @@ const Top = () => {
         </h4>
 
         <ButtonToolbar className='ws-nowrap'>
-          <Button>todo</Button>
+          <EditRoomDrawerBtn />
         </ButtonToolbar>
       </div>
 

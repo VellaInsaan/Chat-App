@@ -10,9 +10,11 @@ const EditableInput = ({
   label = null,
   placeholder = 'Write your nick',
   emptyMsg = 'Input is empty',
+  wrapperClassName = '',
   ...inputProps
 }) => {
   const [input, setInput] = useState(initialValue);
+
   const [isEditable, setIsEditable] = useState(false);
 
   const onInputChange = useCallback((value) => {
@@ -29,6 +31,7 @@ const EditableInput = ({
 
     if (trimmed === '') {
       showMessage('info', emptyMsg);
+      return;
     }
 
     if (trimmed !== initialValue) {
@@ -38,7 +41,7 @@ const EditableInput = ({
   };
 
   return (
-    <div>
+    <div className={wrapperClassName}>
       {label}
       <InputGroup>
         <Input
