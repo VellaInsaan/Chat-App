@@ -72,6 +72,7 @@ const Bottom = () => {
           placeholder='Write a message here'
           onChange={onInputChange}
           onKeyDown={onKeyDown}
+          value={input}
         />
         <InputGroup.Button
           color='blue'

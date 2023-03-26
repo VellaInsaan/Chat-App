@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { auth, database } from '../../../misc/firebase';
-import { showMessage, transformToArrWithId } from '../../../misc/helpers';
+import {
+  MessageOnError,
+  showMessage,
+  transformToArrWithId,
+} from '../../../misc/helpers';
 import MessageItem from './MessageItem';
 const Messages = () => {
   const { chatId } = useParams();
@@ -71,6 +75,39 @@ const Messages = () => {
     showMessage('info', alertMsg);
   }, []);
 
+  const handleDelete = useCallback(
+    async (msgId) => {
+      if (!window.confirm('Delete this message ?')) {
+        return;
+      }
+
+      const isLast = messages[messages.length - 1].id === msgId;
+
+      const updates = {};
+
+      updates[`/messages/${msgId}`] = null;
+
+      if (isLast && messages.length > 1) {
+        updates[`rooms/${chatId}/lastMessage`] = {
+          ...messages[messages.length - 2],
+          msdId: messages[messages.length - 2].id,
+        };
+      }
+
+      if (isLast && messages.length === 1) {
+        updates[`rooms/${chatId}/lastMessage`] = null;
+      }
+
+      try {
+        await database.ref().update(updates);
+        showMessage('info', 'Message has been deleted');
+      } catch (err) {
+        MessageOnError(err.message);
+      }
+    },
+    [chatId, messages]
+  );
+
   return (
     <ul className='msg-list custom-scroll'>
       {isChatEmpty && <li> No messages yet...</li>}
@@ -81,6 +118,7 @@ const Messages = () => {
             message={msg}
             handleAdmin={handleAdmin}
             handleLike={handleLike}
+            handleDelete={handleDelete}
           />
         ))}
     </ul>

@@ -8,8 +8,9 @@ import { auth } from '../../../misc/firebase';
 import { useHover, useMediaQuery } from '../../../misc/custom-hooks';
 import IconBtnControl from './IconBtnControl';
 import { FaHeart } from 'react-icons/fa';
+import { GrClose } from 'react-icons/gr';
 
-const MessageItem = ({ message, handleAdmin, handleLike }) => {
+const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
   const { createdAt, text, author, likes, likeCount } = message;
 
   const isAdmin = useCurrentRoom((val) => val.isAdmin);
@@ -67,6 +68,16 @@ const MessageItem = ({ message, handleAdmin, handleLike }) => {
           }}
           badgeContent={likeCount}
         />
+        {isAdmin && (
+          <IconBtnControl
+            isVisible={canShowIcons}
+            iconName={GrClose}
+            tooltip='Delete this message'
+            onClick={() => {
+              handleDelete(message.id);
+            }}
+          />
+        )}
       </div>
       <div>
         <span className='word-break-all'>{text}</span>
