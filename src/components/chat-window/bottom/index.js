@@ -7,6 +7,7 @@ import { useProfile } from '../../../context/profile.context';
 import { useParams } from 'react-router';
 import { database } from '../../../misc/firebase';
 import { MessageOnError } from '../../../misc/helpers';
+import AttachmentBtnModal from './AttachmentBtnModal';
 
 const assembleMessages = (profile, chatId) => {
   return {
@@ -68,6 +69,7 @@ const Bottom = () => {
   return (
     <div>
       <InputGroup>
+        <AttachmentBtnModal />
         <Input
           placeholder='Write a message here'
           onChange={onInputChange}
