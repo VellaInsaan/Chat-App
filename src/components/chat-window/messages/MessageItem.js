@@ -5,6 +5,7 @@ import PresenceDot from '../../PresenceDot';
 import { Button } from 'rsuite';
 import { useCurrentRoom } from '../../../context/current-room.context';
 import { auth } from '../../../misc/firebase';
+import { useHover } from '../../../misc/custom-hooks';
 
 const MessageItem = ({ message, handleAdmin }) => {
   const { createdAt, text, author } = message;
@@ -15,8 +16,12 @@ const MessageItem = ({ message, handleAdmin }) => {
   const isMsgAuthorAdmin = admins.includes(author.uid);
   const isAuthor = auth.currentUser.uid === author.uid;
   const canGrantAdmin = isAdmin && !isAuthor;
+  const [selfRef, isHovered] = useHover();
   return (
-    <li className='padded mb-1'>
+    <li
+      className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`}
+      ref={selfRef}
+    >
       <div className='d-flex align-items-center font-bolder mb-1'>
         <PresenceDot uid={author.uid} />
         <ProfileAvatar
