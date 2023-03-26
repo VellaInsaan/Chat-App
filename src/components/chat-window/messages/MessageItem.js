@@ -9,9 +9,22 @@ import { useHover, useMediaQuery } from '../../../misc/custom-hooks';
 import IconBtnControl from './IconBtnControl';
 import { FaHeart } from 'react-icons/fa';
 import { GrClose } from 'react-icons/gr';
+import ImgBtnModal from './ImgBtnModal';
+
+const renderFileMessage = (file) => {
+  if (file.contentType.includes('image')) {
+    return (
+      <div className='height-220'>
+        <ImgBtnModal src={file.url} fileName={file.name} />
+      </div>
+    );
+  }
+
+  return <a href={file.url}>Download {file.name}</a>;
+};
 
 const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
-  const { createdAt, text, author, likes, likeCount } = message;
+  const { createdAt, text, author, file, likes, likeCount } = message;
 
   const isAdmin = useCurrentRoom((val) => val.isAdmin);
   const admins = useCurrentRoom((val) => val.admins);
@@ -80,7 +93,8 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
         )}
       </div>
       <div>
-        <span className='word-break-all'>{text}</span>
+        {text && <span className='word-break-all'>{text}</span>}
+        {file && renderFileMessage(file)}
       </div>
     </li>
   );
