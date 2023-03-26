@@ -8,6 +8,7 @@ import { useParams } from 'react-router';
 import { database } from '../../../misc/firebase';
 import { MessageOnError } from '../../../misc/helpers';
 import AttachmentBtnModal from './AttachmentBtnModal';
+import AudioMsgBtn from './AudioMsgBtn';
 
 const assembleMessages = (profile, chatId) => {
   return {
@@ -102,6 +103,7 @@ const Bottom = () => {
     <div>
       <InputGroup>
         <AttachmentBtnModal afterUpload={afterUpload} />
+        <AudioMsgBtn afterUpload={afterUpload} />
         <Input
           placeholder='Write a message here'
           onChange={onInputChange}
