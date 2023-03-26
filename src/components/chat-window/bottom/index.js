@@ -66,10 +66,42 @@ const Bottom = () => {
     }
   };
 
+  const afterUpload = useCallback(
+    async (files) => {
+      setIsLoading(true);
+
+      const updates = {};
+
+      files.forEach((file) => {
+        const msgData = assembleMessages(profile, chatId);
+        msgData.file = file;
+        const messageId = database.ref('messages').push().key;
+
+        updates[`/messages/${messageId}`] = msgData;
+      });
+      const lastMessageId = Object.keys(updates).pop();
+
+      updates[`/rooms/${chatId}/lastMessage`] = {
+        ...updates[lastMessageId],
+        msgId: lastMessageId,
+      };
+
+      try {
+        await database.ref().update(updates);
+
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        MessageOnError(err.message);
+      }
+    },
+    [chatId, profile]
+  );
+
   return (
     <div>
       <InputGroup>
-        <AttachmentBtnModal />
+        <AttachmentBtnModal afterUpload={afterUpload} />
         <Input
           placeholder='Write a message here'
           onChange={onInputChange}
